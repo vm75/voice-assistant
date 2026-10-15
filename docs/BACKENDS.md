@@ -110,7 +110,7 @@ history/memory is governed by the agent and is not erased by that command.
 ## Built-in wake words
 
 The installed openWakeWord models include `alexa`, `hey_jarvis`, `hey_mycroft`,
-`hey_rhasspy` and `timer`. The default is `hey_jarvis`. Set `wake.model` in private
+`hey_rhasspy` and `okay_nabu`. The default is `hey_jarvis`. Set `wake.model` in private
 `~/.config/jeeves/voice.json` to the model name and restart `jeeves-voice.service`.
 Use one frontend at a time; the optional HA-managed frontend has its own wake settings.
 

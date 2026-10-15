@@ -1,5 +1,7 @@
 # Jeeves Voice Assistant
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 [![CI](https://github.com/vm75/voice-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/vm75/voice-assistant/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.13%20%7C%203.14-blue?logo=python&logoColor=white)](.github/workflows/ci.yml)
 [![Platform](https://img.shields.io/badge/Platform-Ubuntu%20Server-E95420?logo=ubuntu&logoColor=white)](docs/QUICKSTART.md)
@@ -94,3 +96,8 @@ English recognition, one shared conversation per machine, one-shot alarms and bo
 recordings are supported. Replies do not support barge-in or streaming playback yet.
 Music integration, custom wake-word training and hardware-specific extras are separate
 work; physical audio and cold-boot behavior should be tested on each new machine.
+
+## License
+
+Project code is licensed under the [MIT License](LICENSE). Third-party dependencies
+and downloaded models retain their own licenses; see the [voice model attribution](docs/voices/LESSAC_MODEL_CARD.md).
