@@ -1,0 +1,23 @@
+[Unit]
+Description=Jeeves standalone voice assistant (modular conversation backend)
+After=pipewire.service pipewire-pulse.service wireplumber.service jeeves-alerts.service
+Wants=pipewire.service pipewire-pulse.service wireplumber.service jeeves-alerts.service
+Conflicts=jeeves-satellite.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+WorkingDirectory=@ROOT@
+ExecStart=@ROOT@/vendor/voice/.venv/bin/python -m jeeves.voice --config %h/.config/jeeves/voice.json
+Environment=PYTHONUNBUFFERED=1
+Environment=HF_HUB_OFFLINE=1
+Environment=OMP_NUM_THREADS=2
+Restart=always
+RestartSec=5
+TimeoutStopSec=10
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=default.target

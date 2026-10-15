@@ -1,0 +1,55 @@
+# Apply on the HA SERVER after following docs/HOME_ASSISTANT.md.
+rest_command:
+  jeeves_command:
+    url: !secret jeeves_alert_command_url
+    method: POST
+    headers:
+      authorization: !secret jeeves_alert_authorization
+    content_type: "application/json"
+    timeout: 10
+    payload: >-
+      {{ {"command": command, "request_id": request_id} | to_json }}
+
+automation:
+  - id: jeeves_persistent_voice_alerts
+    alias: Jeeves persistent audible alerts
+    mode: queued
+    max: 20
+    triggers:
+      - trigger: conversation
+        command:
+          - "(set|start) [a] [jeeves] timer for {duration}"
+          - "set (a|an) alarm for {time}"
+          - "wake me up at {time}"
+          - "remind me [to] {reminder} in {duration}"
+          - "remind me [to] {reminder} at {time}"
+          - "(stop|cancel) [the] alarm"
+          - "(stop|cancel) [the] timer"
+          - "(stop|cancel) [the] reminder"
+          - "cancel all (timers|alarms|reminders)"
+          - "stop [all] alerts"
+          - "dismiss alerts"
+          - "list [my] alerts"
+          - "what alerts are scheduled"
+          - "how much time is left"
+    variables:
+      jeeves_satellite_entity: !secret jeeves_satellite_entity
+    actions:
+      # Replace with the actual entity ID from the Jeeves ESPHome device.
+      # Restrict these commands to this satellite: other rooms must not ring here.
+      - if: "{{ trigger.satellite_id != jeeves_satellite_entity }}"
+        then:
+          - set_conversation_response: "Please ask this command at the Jeeves satellite."
+          - stop: Wrong satellite
+      - action: rest_command.jeeves_command
+        data:
+          command: "{{ trigger.sentence }}"
+          request_id: "{{ now().isoformat() ~ '-' ~ trigger.satellite_id }}"
+        response_variable: jeeves_result
+        continue_on_error: true
+      - set_conversation_response: >-
+          {% if jeeves_result is defined and jeeves_result.content is mapping %}
+            {{ jeeves_result.content.speech | default('Jeeves could not save that alert.') }}
+          {% else %}
+            Jeeves is unavailable. The request has not been confirmed. Check active alerts before retrying.
+          {% endif %}

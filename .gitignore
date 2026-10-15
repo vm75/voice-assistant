@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+.state/
+logs/
+.venv/
+vendor/
+*.sqlite3*
+
+models/tts/*.onnx
+models/tts/*.partial
+models/stt/
+
+# Deployment credentials and local configuration must never be published.
+.env
+.env.*
+*.pem
+*.key
+hermes.json
+homeassistant.json
+voice.json
+alerts.json
+ha-secret.yaml
+secrets.yaml

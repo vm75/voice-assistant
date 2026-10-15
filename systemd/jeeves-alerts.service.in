@@ -1,0 +1,19 @@
+[Unit]
+Description=Jeeves persistent audible timers, alarms and reminders
+After=pipewire.service pipewire-pulse.service wireplumber.service
+Wants=pipewire.service pipewire-pulse.service wireplumber.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+WorkingDirectory=@ROOT@
+ExecStart=/usr/bin/python3 -m jeeves.alerts --config %h/.config/jeeves/alerts.json
+Environment=PYTHONUNBUFFERED=1
+Restart=always
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=default.target

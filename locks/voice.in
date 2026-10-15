@@ -1,0 +1,3 @@
+faster-whisper==1.2.1
+pyopen-wakeword==1.1.0
+webrtcvad-wheels==2.0.14

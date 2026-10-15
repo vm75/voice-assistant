@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.13', '3.14']
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Unit and local HTTP integration tests
+        run: python -m unittest discover -s tests -v
+      - name: Installer shell syntax
+        run: bash -n scripts/install-alerts.sh scripts/install-tts.sh scripts/install-voice.sh scripts/install-satellite.sh
+      - name: Documentation links and examples
+        run: python scripts/check-docs.py
+      - name: Whitespace
+        run: git diff --check

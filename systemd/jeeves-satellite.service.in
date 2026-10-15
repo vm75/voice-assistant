@@ -1,0 +1,17 @@
+[Unit]
+Description=Jeeves Linux Voice Assistant (ESPHome satellite)
+After=pipewire.service pipewire-pulse.service wireplumber.service
+Wants=pipewire.service pipewire-pulse.service wireplumber.service
+StartLimitIntervalSec=0
+
+[Service]
+WorkingDirectory=@ROOT@/vendor/linux-voice-assistant
+EnvironmentFile=%h/.config/jeeves/satellite.env
+ExecStart=@ROOT@/vendor/linux-voice-assistant/.venv/bin/linux-voice-assistant --name ${JEEVES_NAME} --host ${JEEVES_BIND_ADDRESS} --audio-input-device ${JEEVES_SOURCE} --audio-input-channels 1 --audio-output-device pulse/${JEEVES_SINK} --disable-peripheral-api
+Restart=always
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=default.target
